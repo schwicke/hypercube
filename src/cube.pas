@@ -26,7 +26,7 @@ var pnkte:lst;
     n:integer;
     error:integer;
     c:char;
-    farbe,rot,gruen:word;
+    farbe,rot,blau:word;
     d,s,fx,fy,fz:real;
     sn,cs:real;
     txt:string;
@@ -326,10 +326,10 @@ end;
 {main starts here}
 begin
    modus:=true;
-   sn:=sin(0.0001);
-   cs:=cos(0.0001);
+   sn:=sin(0.01);
+   cs:=cos(0.01);
    rot:=4;
-   gruen:=2;
+   blau:=3;
    s:=50;
    fy:=0;
    fz:=1000;
@@ -355,7 +355,7 @@ begin
 	    drw(false,alt1);
 	    drw(true,vrsch);
 	    update(alt1,vrsch);
-	    farbe:=gruen;
+	    farbe:=blau;
 	    fx:=d;fy:=2;
 	    proj(modus);
 	    drw(false,alt2);
@@ -374,6 +374,7 @@ begin
 	      '-':begin fz:=fz+10;c:=' ';end;
 	    end;
 	    rota(sn,cs,1+ord(c)-ord('1'));
+            delay(word(round(100/n)));
 	 until c=chr(27);
    end
    else
