@@ -6,8 +6,8 @@ uses dos,crt,ptccrt,ptcgraph;
 var altmode:integer;
     orenable:boolean;
 
-procedure graphmode;
-procedure textmode;
+procedure mygraphmode;
+procedure mytextmode;
 procedure setrgb(nr,r,g,b:integer);
 procedure save(name:string);
 procedure load(name:string);
@@ -16,8 +16,8 @@ procedure linexy(x1,y1,x2,y2:word;c:byte);
 
 implementation
 
-procedure graphmode;    {800X600 bei 256 aus 256k}
-var  gd, gm, ret: integer;
+procedure mygraphmode;    {800X600 bei 256 aus 256k}
+var  gd, gm, ret: smallint;
 
 begin
   gd := D8bit;
@@ -31,7 +31,7 @@ begin
   end;
 end;
 
-procedure textmode;
+procedure mytextmode;
 begin
    closegraph();
 end;

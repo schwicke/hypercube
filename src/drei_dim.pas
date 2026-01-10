@@ -276,9 +276,9 @@ begin
 end;
 
 procedure put3dpixel(op:vek;color:byte);
-var ox,oxr,oxg,xd,yd,vrp1,nrp1,fp:vek;
-   ix,iy,c:integer;
-   vr,vg:boolean;
+var ox,oxr,oxg,vrp1,nrp1,fp:vek;
+   ix,iy: integer;
+   vr,vg: boolean;
 
 begin
    if not rgenable then
@@ -295,8 +295,6 @@ begin
       color:=color and 15;  {16 shades of grey}
       vrp1:=vrp;
       nrp1:=nrp;
-      xd:=xdach;
-      yd:=ydach;
 
       {move by augdist/2 to the right}
       fp:=fluchtpunkt;
@@ -373,7 +371,7 @@ begin
    end
    else dummy:=calcproj(op1,ox1);
    {at this point there are projections of clipped endpoints in ox1,ox2}
-   calcline3d:=true;
+   calcline3d:=dummy;
 end;
 
 procedure line3d(op1,op2:vek;farbe:byte);

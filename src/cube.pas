@@ -1,6 +1,6 @@
 program wuerfel;
 {g+}
-uses cthreads,crt,ptccrt,ptcgraph,drei_dim;
+uses cthreads,crt,ptccrt,ptcgraph,selbstgraf,drei_dim;
 
 {3d projection of N dimensional cubes}
 
@@ -19,21 +19,18 @@ type punkt=array[1..10] of real;
             x1,y1,x2,y2:real;
            end;
 
-var pnkte:lst;
-    vrsch,alt1,alt2:vrb;
-    modus:boolean;
-
-    n:integer;
-    error:integer;
-    c:char;
-    farbe,rot,blau:word;
-    d,s,fx,fy,fz:real;
-    sn,cs:real;
-    txt:string;
-    gd, gm: integer;
-
-function search(nr:integer):lst;
+var pnkte           : lst;
+    vrsch,alt1,alt2 : vrb;
+    modus           : boolean;
+    n               : integer;
+    c               : char;
+    farbe,rot,blau  : word;
+    d,s,fx,fy,fz    : real;
+    sn,cs           : real;
+ 
+function search(nr  : integer):lst;
 var h1:lst;
+
 begin
  h1:=pnkte;
  while (h1<>nil)and(h1^.nr<>nr) do h1:=h1^.wtr;
@@ -71,12 +68,12 @@ begin
 	 c1:=(s-v1^.vp1^.p[3])/dz1;
 	 c2:=(s-v1^.vp2^.p[3])/dz2;
       end
-   else begin
-      c1:=0;c2:=0;
-      dx1:=0;dx2:=0;
-      dy1:=0;dy2:=0;
-   end;
-
+      else
+      begin
+         c1:=0;c2:=0;
+         dx1:=0;dx2:=0;
+         dy1:=0;dy2:=0;
+      end;
       v1^.x1:=(v1^.vp1^.p[1])-c1*dx1;{Projektion}
       v1^.y1:=(v1^.vp1^.p[2])-c1*dy1;
       v1^.x2:=v1^.vp2^.p[1]-c2*dx2;
@@ -101,18 +98,18 @@ begin
    pnkte^.wtr:=nil;
    pnkte^.nr:=1;
    vrsch^.wtr:=nil;vrsch^.vp1:=nil;vrsch^.vp2:=nil;
-   for i:=1 to n do pnkte^.p[i]:=0;{nullpunkt als Ausgangspunkt}
+   for i:=1 to n do pnkte^.p[i]:=0;  {Initialise as Null vector}
    for j:=1 to n do {dimension}
    begin
-
-{Verbindungsvorschrift fÅr neue Punkte}
+{Connections new points}
       v1:=vrsch;
       if v1<>nil then
       begin
 	 new(w2);
 	 v2:=w2;
 	 w2^.wtr:=nil;
-	 w2^.vp1:=nil;w2^.vp2:=nil;
+	 w2^.vp1:=nil;
+         w2^.vp2:=nil;
       end;
       while v1<>nil do
       begin
@@ -323,6 +320,31 @@ begin
    until c=#27;
 end;
 
+procedure cleanup();
+var
+   v1, v2          : vrb;
+   l1, l2          : lst;
+begin
+   writeln('Cleaning up...');
+   restorecrtmode;
+   l1:=pnkte;
+   while l1<>nil do
+   begin
+      l2:=l1;
+      l1:=l1^.wtr;
+      dispose(l2);
+   end;
+   v1:=vrsch;
+   while v1<>nil do
+   begin
+      v2:=v1;
+      v1:=v1^.wtr;
+      dispose(v2);
+   end;
+   writeln('Good bye!');
+end;
+
+
 {main starts here}
 begin
    modus:=true;
@@ -337,53 +359,72 @@ begin
    writeln('<,>: Change eye distance, +,- distance of vanishing point');
    writeln('Enter the cubes dimension (e.g. 2, 3, 4, 5, ...):');
    readln(n);
-   create(n);
-   alt1:=copy(vrsch);
-   alt2:=copy(vrsch);
+   {
    gd := D8bit;
    gm := m640x480;
    initgraph(gd, gm, 'graphics');
    error := graphresult();
    if error=grok then
+   }
+   mygraphmode();
    begin
+      create(n);
+      alt1:=copy(vrsch);
+      alt2:=copy(vrsch);
       c:=' ';
       if n>1 then
-	 repeat
-	    farbe:=rot;
-	    fx:=-d;fy:=-2;
-	    proj(modus);
-	    drw(false,alt1);
-	    drw(true,vrsch);
-	    update(alt1,vrsch);
-	    farbe:=blau;
-	    fx:=d;fy:=2;
-	    proj(modus);
-	    drw(false,alt2);
-	    drw(true,vrsch);
-	    update(alt2,vrsch);
-	    settextstyle(3,horizdir,1);
-	    setcolor(yellow);
-	    outtextxy(0,0,'Rotate with keys 1..'+chr(n-1+ord('0')));
-	    repeat
-	       if keypressed then c:=readkey;
-	    until c in['+','-','<','>',#27,'1'..chr(ord('1')+n-2)];
-	    case c of
-	      '<':begin d:=d-0.1;c:=' ';end;
-	      '>':begin d:=d+0.1;c:=' ';end;
-	      '+':begin fz:=fz-10;c:=' ';end;
-	      '-':begin fz:=fz+10;c:=' ';end;
-	    end;
-	    rota(sn,cs,1+ord(c)-ord('1'));
-            delay(word(round(100/n)));
-	 until c=chr(27);
-   end
+      begin
+         while c<>#27 do
+         begin
+            farbe:=rot;
+            fx:=-d;fy:=-2;
+            proj(modus);
+            drw(false,alt1);
+            drw(true,vrsch);
+            update(alt1,vrsch);
+            farbe:=blau;
+            fx:=d;fy:=2;
+            proj(modus);
+            drw(false,alt2);
+            drw(true,vrsch);
+            update(alt2,vrsch);
+            settextstyle(3,horizdir,1);
+            setcolor(yellow);
+            outtextxy(0,0,'Rotate with keys 1..'+chr(n-1+ord('0')));
+            repeat
+               if keypressed then c:=readkey;
+            until c in ['+','-','<','>',#27,'1'..chr(ord('1')+n-2)];
+            case c of
+              '<' : begin
+                 d:=d-0.1;
+                 c:=' ';
+              end;
+              '>' : begin
+                 d:=d+0.1;
+                 c:=' ';
+              end;
+              '+' : begin
+                 fz:=fz-10;
+                 c:=' ';
+              end;
+              '-' : begin
+                 fz:=fz+10;
+                 c:=' ';
+              end;
+              #27 :
+              writeln('Exiting ...');
+            else
+            begin
+               rota(sn,cs,1+ord(c)-ord('1'));
+               delay(word(round(100/n)));
+            end;
+            end; {of case}
+         end; {of while}
+         mytextmode();
+         cleanup();
+         writeln('Done');
+      end
    else
-   begin
-      restorecrtmode;txt:=grapherrormsg(error);
-      writeln('Fehler:',txt);
-      readln;
-      writeln(red,green);
-   end;
+      writeln('N must be between 2 and 10');
+   end
 end.
-
-

@@ -4,6 +4,6 @@ clean:
 	find . -name \*.o -exec rm \{} \;
 	if [ -e cube ]; then rm cube; fi
 build:
-	cd src; fpc cube.pas
+	cd src; fpc -g cube.pas
 	mv src/cube .
 
