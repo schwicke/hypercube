@@ -53,3 +53,15 @@ Press a key to exit.
 
 
 
+## (First) simulation of a pendulum with two masses 
+This is a 2 dimensional simulation of two coupled masses.
+Start the simulation with
+```
+./dpplpndl
+```
+Press escape to exit.
+### Limitations
+This simulation currently does not accept any inputs
+
+
+
