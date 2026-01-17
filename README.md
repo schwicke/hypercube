@@ -1,6 +1,4 @@
-# 3d-projection of N-dimensional hypercube
-
-![4d-hypercube](screenshot.png)
+# Recovery of personal ancient Pascal based simulations and programs
 
 ## Disclaimer
 This is a software preservation kind of project. The goal is not to have something which is free of bugs but rather to enjoy getting old code up and running again.
@@ -13,9 +11,7 @@ maybe around 1996. I stumbled over it on an old backup CD of mine recently, whil
 The original code was created using Turbo Pascal (on DOS), and was run on a PC with a i387 coprocessor. Bits were written in assembler to gain speed.
 
 The code in this project has been cleaned up a bit, and ported to fpc.
-While there are some bugs which would need some attention, it actually works.
-
-Make sure that you have your red-green 3d classes at hand !
+While there are some bugs which would need some attention, it kind of works.
 
 # Building
 Make sure that you have fpc installed. To build, run
@@ -26,12 +22,20 @@ make
 # Running
 After successful compilation, the following executables are available:
 
-## 3 dimensional projection of an N-dimensional hypercube:
+## 3 dimensional projection of an N-dimensional hypercube
+
+Make sure that you have your red-blue 3d classes at hand !
+
 Start with
 ```
 ./cube
 ```
-and enter the number of dimensions. Dimensionality can be between 2 and 9
+and enter the number of dimensions. Dimensionality can be between 2 and 9. 
+
+![4d-hypercube](screenshot.png)
+
+Press esc to terminate. 
+
 
 ### Limitations
 * Rotation is only possible into one direction, and the rotation angle is hard coded
